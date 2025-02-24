@@ -92,11 +92,8 @@ class TokenizerInfo::Impl {
       "<｜end▁of▁sentence｜>"
   };
   inline static const std::unordered_set<std::string> EXCEPTION_SPECIAL_TOKENS = {
-    "<think>",
-    "</think>",
-    "<answer>",
-    "</answer>"
-  }
+      "<think>", "</think>", "<answer>", "</answer>"
+  };
 };
 
 /************* Token decoders: ByteFallback and ByteLevel *************/
@@ -339,7 +336,9 @@ class HFTokenizerAnalyzer {
 bool TokenizerInfo::Impl::IsSpecialToken(const std::string& token) {
   // gemma treats [@BOS@] as a special token
   return ((token[0] == '<' && token.back() == '>' && token.size() >= 3) || token == "[@BOS@]" ||
-         token == "") && !(EXCEPTION_SPECIAL_TOKENS.count(token)); //make not being in exception stop tokens a necessary condition
+          token == "") &&
+         !(EXCEPTION_SPECIAL_TOKENS.count(token)
+         );  // make not being in exception stop tokens a necessary condition
 }
 
 TokenizerInfo::Impl::Impl(
